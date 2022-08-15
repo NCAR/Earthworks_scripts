@@ -1,5 +1,6 @@
 #!/bin/csh
 
+module load python
 set echo verbose
 
 date
@@ -11,13 +12,13 @@ set scratch          = /glade/scratch/$user
 set work             = /glade/work/$user/earthworks/cpu_che
 set account_key      = UCSU0085
 
-foreach n (32,64)                  # MPI tasks
+foreach n (32 64)                  # MPI tasks
 
 ####################################################################
 # Machine, compset, PE layout etc.
 ####################################################################
 setenv GITREPO       my_cesm_sandbox
-setenv CCSMROOT      $scratch/$GITREPO
+setenv CCSMROOT      $work/$GITREPO
 setenv ntasks        $n
 setenv nthrds        1
 setenv CASE          FHS94.mpas120.cheyenne.intel.$n.test
@@ -50,7 +51,7 @@ if ($compile_model > 0) then
    ./xmlchange MAX_TASKS_PER_NODE=32
    ./xmlchange STOP_OPTION=ndays
    ./xmlchange STOP_N=10
-
+   cat /glade/u/home/ssuresh/scripts/cam_namelist >> user_nl_cam
    ./xmlchange --file env_run.xml      --id RUNDIR     --val $PTMP/run
    ./xmlchange --file env_build.xml    --id EXEROOT    --val $PTMP/bld
 
