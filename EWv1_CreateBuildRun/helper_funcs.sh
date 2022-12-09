@@ -44,8 +44,8 @@ function usage() {
   echo "been completed."
   echo ""
   echo "usage: $THIS_FILE [--srcroot <path>] [--casesdir <path>]"
-  echo "         [--res=<r_array>] [--compiler=<c_array>]"
-  echo "         [-nc|--no-create] [-nb|-no-build] [-nr|--no-run]"
+  echo "         [--res=<r_array>] [--compiler=<c_array>] [--ntasks=<nt_array>]"
+  echo "         [-nc|--no-create] [-nb|-no-build]   [-nr|--no-run]"
   echo "         [-ow|--overwrite] [-q|--quiet]"
   echo "options:"
   echo "  [--srcroot <path>]    : Path to a clone of the EarthWorks repo, default value:"
@@ -55,6 +55,8 @@ function usage() {
   echo "  [--res=<res array>]   : Different resoltions to run the case at (must be part"
   echo "                          of case RES statement below)"
   echo "  [--compiler=<c_array>]: Different compilers to create cases with"
+  echo "  [--ntasks=<nt_array>] : Different # of tasks (pecounts) to create cases with"
+  echo "                          A negative value implies default pecount from CIME"
   echo "  [-nc|--no-create]     : Skip the create and setup steps"
   echo "  [-nb|--no-build]      : Skip the build step"
   echo "  [-nr|--no-run]        : Skip the run step"
@@ -98,6 +100,9 @@ while [ $# -ge 1 ]; do
       ;;
     --compiler=*)
       C_SUITES=( "${ARG#*=}" )
+      ;;
+    --ntasks=*)
+      NTASKSS=( "${ARG#*=}" )
       ;;
     -nc|--no-create)
       DO_CREATE=false
@@ -144,9 +149,14 @@ if [ ! -d $SRCROOT ]; then
 fi
 if [ ! -d $SRCROOT/cime/scripts ]; then
   echo "ERROR: \"SRCROOT/cime/scripts\" not found. Make sure to run manage_externals/checkout_externals in SRCROOT"
-
   exit 1
 fi
+for NT in ${NTASKSS[@]:-"-1"}; do
+  case ${NT#[+-]} in
+    *[!0-9]*) echo "ERROR: non-integer \"$NT\" encountered in NTASKSS array"; exit 1 ;;
+    *) ;; # Do nothing otherwise
+  esac
+done
 # End Parse and check command line arguments ##################################
 
 
@@ -173,7 +183,13 @@ echo ""
 echo -e  "CASENAMEs:  ${PRE:+PRE_}COMPSET.GRID.MACHINE.COMPILER${NTASKSS:+.NTASKS}"
 for C in ${C_SUITES[@]}; do
 for R in ${RESS[@]}; do
-  printf "        %s%s.mpasa%03d.%s.%s%s\n" "${PRE:+${PRE}_}" "$COMP" "$R" "$MACH" "$C" "${NTASKS:+.$NTASKS}"
+for NT in ${NTASKSS[@]:-"-1"}; do
+  if [ -n "$NT" ] && [ $NT -gt 0 ]; then
+    printf "        %s%s.mpasa%03d.%s.%s.%s\n" "${PRE:+${PRE}_}" "$COMP" "$R" "$MACH" "$C" "$NT"
+  else
+    printf "        %s%s.mpasa%03d.%s.%s\n" "${PRE:+${PRE}_}" "$COMP" "$R" "$MACH" "$C"
+  fi
+done
 done
 done
 echo -e "-------------------------------------------------------------------------\n\n"

@@ -19,6 +19,8 @@ OUTPUTROOT="$TMPDIR"
 C_SUITES="intel"
 # For resolutions, provide an array of valid CESM grids in the RESS variable
 RESS="120"
+# For pecount, provide an array of valid CESM pecounts in the NTASKSS variable
+NTASKSS=""
 
 ## Controls for this script
 # VERBOSITY is used to control the output of vexec function below
@@ -38,7 +40,6 @@ COMP="FHS94"
 MACH="cheyenne"
 A_KEY="UCSU0085"
 PRE="" # Case prefix for uniqueness
-NTASKS=""   # Set to a non-empty value to overwrite the default pecount for the cases
 # End EDIT HERE ###############################################################
 
 
@@ -57,10 +58,12 @@ module load python/3     # Python 3 is needed by CIME
 
 for C_SUITE in ${C_SUITES[@]}; do
 for RES in ${RESS[@]}; do
+for NTASKS in ${NTASKSS[@]:-"-1"}; do
   #############################################################################
   # End Set loop vars
   #############################################################################
-  CASE=$(printf "%s%s.mpasa%03d.%s.%s%s" "${PRE:+${PRE}_}" "$COMP" "$R" "$MACH" "$C" "${NTASKS:+.$NTASKS}")
+  CASE=$(printf "%s%s.mpasa%03d.%s.%s" "${PRE:+${PRE}_}" "$COMP" "$R" "$MACH" "$C")
+  [ $NTASKS -gt 0 ] && CASE="${CASE}.${NTASKS}"
   CASEROOT="${CASES_DIR}/${CASE}"
   GRID=$(printf "mpasa%03d_mpasa%03d" $RES $RES)
   echo -e "--- Start loop for $CASE ---\n"
@@ -93,7 +96,7 @@ for RES in ${RESS[@]}; do
     CCMD="$CCMD --case $CASEROOT --project $A_KEY"
     CCMD="$CCMD --compiler $C_SUITE --res $GRID --compset ${COMP_LONG:-$COMP}"
     CCMD="$CCMD --driver nuopc --run-unsupported"
-    [ -z $NTASKS ] || CCMD="$CCMD --pecount $NTASKS"
+    [ $NTASKS -gt 0 ] && CCMD="$CCMD --pecount $NTASKS"
 
     vexec "$CCMD"
     if [ "$?" -ne 0 ]; then
@@ -161,5 +164,6 @@ __EOF_NL_CAM
   fi # DO_RUN
 
   echo -e "--- End loop for $CASE ---\n"
+done #for NTASKS in NTASKSS
 done #for RES in $RESS
 done # for C_SUITE in $C_SUITES
