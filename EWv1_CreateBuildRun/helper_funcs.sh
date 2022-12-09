@@ -16,6 +16,12 @@ function vexec() {
   [ $VERBOSITY -ge 2 ] && $1 || $1 > /dev/null 2>&1
 }
 
+function print_arr() {
+  # Override IFS to a comma and echo input array
+  local IFS=", "
+  echo "$*"
+}
+
 function usage() {
   # Print information about how to use this script
   # usage [{return val} {messages...}]
@@ -153,8 +159,8 @@ echo -e "Using:"
 echo -e "\tEarthWorks Repo at                   \"$SRCROOT\""
 echo -e "\tCreating cases in                    \"$CASES_DIR\""
 echo -e "\tCase bld and run directories will be \"${OUTPUTROOT}/\${CASENAME}\""
-echo -e "\tRunning with compiler                \"${C_SUITES[@]}\""
-echo -e "\tOn MPAS-A grids (km)                 \"${RESS[@]}\""
+echo -e "\tRunning with compilers               \"$(print_arr ${C_SUITES[@]})\""
+echo -e "\tOn MPAS-A grids (km)                 \"$(print_arr ${RESS[@]})\""
 if [ "$OVERWRITE" = true ]; then
   echo -e "\tCREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN\tOVERWRITE=true"
 else
