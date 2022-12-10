@@ -46,7 +46,7 @@ function usage() {
   echo "usage: $THIS_FILE [--srcroot <path>] [--casesdir <path>]"
   echo "         [--res=<r_array>] [--compiler=<c_array>] [--ntasks=<nt_array>]"
   echo "         [-nc|--no-create] [-nb|-no-build]   [-nr|--no-run]"
-  echo "         [-ow|--overwrite] [-q|--quiet]"
+  echo "         [-dr|--dry-run]   [-ow|--overwrite] [-q|--quiet]"
   echo "options:"
   echo "  [--srcroot <path>]    : Path to a clone of the EarthWorks repo, default value:"
   echo "                          \"$SRCROOT\""
@@ -60,6 +60,8 @@ function usage() {
   echo "  [-nc|--no-create]     : Skip the create and setup steps"
   echo "  [-nb|--no-build]      : Skip the build step"
   echo "  [-nr|--no-run]        : Skip the run step"
+  echo "  [-dr|--dry-run]       : Only print run info and case names, then exit"
+  echo "                          This is equivalent to providing \"-nc -nb -nr\""
   echo "  [-ow|--overwrite]     : If a case already exists, delete it first (no effect"
   echo "                          with --no-create provided)"
   echo "  [-cp|--caseprefix str]: Prepend this value to case names if provided"
@@ -113,6 +115,9 @@ while [ $# -ge 1 ]; do
     -nr|--no-run)
       DO_RUN=false
       ;;
+    -dr|--dry-run)
+      DRY_RUN=true
+      ;;
     -ow|--overwrite)
       OVERWRITE=true
       ;;
@@ -157,6 +162,10 @@ for NT in ${NTASKSS[@]:-"-1"}; do
     *) ;; # Do nothing otherwise
   esac
 done
+# Not doing any steps is equivalent to a dry-run
+if [ "$DO_CREATE" = false ] && [ "$DO_BUILD" = false ] && [ "$DO_RUN" = false ]; then
+  DRY_RUN=true
+fi
 # End Parse and check command line arguments ##################################
 
 
@@ -171,10 +180,14 @@ echo -e "\tCreating cases in                    \"$CASES_DIR\""
 echo -e "\tCase bld and run directories will be \"${OUTPUTROOT}/\${CASENAME}\""
 echo -e "\tRunning with compilers               \"$(print_arr ${C_SUITES[@]})\""
 echo -e "\tOn MPAS-A grids (km)                 \"$(print_arr ${RESS[@]})\""
-if [ "$OVERWRITE" = true ]; then
-  echo -e "\tCREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN\tOVERWRITE=true"
+if [ "$DRY_RUN" = true ] ; then
+  echo -e "\n\tDRY_RUN=$DRY_RUN, exiting early after printing case names"
 else
-  echo -e "\tCREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN"
+  if [ "$OVERWRITE" = true ]; then
+    echo -e "\tCREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN\tOVERWRITE=true"
+  else
+    echo -e "\tCREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN"
+  fi
 fi
 if [ ${#ARGS[@]} -gt 0 ]; then
 	echo -e "Unrecognized and ignored args: ${ARGS[@]}"
@@ -194,3 +207,8 @@ done
 done
 echo -e "-------------------------------------------------------------------------\n\n"
 # End Print some info about the run of this script ############################
+
+# End early if DRY_RUN has been set
+if [ "$DRY_RUN" = true ] ; then
+  exit 0
+fi
