@@ -40,6 +40,8 @@ COMP="FKESSLER"
 MACH="cheyenne"
 A_KEY="UCSU0085"
 PRE="" # Case prefix for uniqueness
+STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
+STOP_N=10         # For STOP_N xml variables in a case
 # End EDIT HERE ###############################################################
 
 
@@ -121,8 +123,8 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
     cd $CASEROOT
     ./xmlchange CAM_CONFIG_OPTS="-phys kessler -analytic_ic -nlev 32"
     ./xmlchange DOUT_S=false
-    ./xmlchange STOP_OPTION=ndays
-    ./xmlchange STOP_N=10
+    ./xmlchange STOP_OPTION=$STOP_OPT
+    ./xmlchange STOP_N=$STOP_N
 
 cat << __EOF_NL_CAM >> user_nl_cam
 mpas_block_decomp_file_prefix = '$ATM_BLCK_PRE'

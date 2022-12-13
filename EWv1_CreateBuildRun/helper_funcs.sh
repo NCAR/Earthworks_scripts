@@ -45,6 +45,7 @@ function usage() {
   echo ""
   echo "usage: $THIS_FILE [--srcroot <path>] [--casesdir <path>]"
   echo "         [--res=<r_array>] [--compiler=<c_array>] [--ntasks=<nt_array>]"
+  echo "         [--stopopt opt_str] [--stopn N]"
   echo "         [-nc|--no-create] [-nb|-no-build]   [-nr|--no-run]"
   echo "         [-dr|--dry-run]   [-ow|--overwrite] [-q|--quiet]"
   echo "options:"
@@ -57,6 +58,10 @@ function usage() {
   echo "  [--compiler=<c_array>]: Different compilers to create cases with"
   echo "  [--ntasks=<nt_array>] : Different # of tasks (pecounts) to create cases with"
   echo "                          A negative value implies default pecount from CIME"
+  echo "  [--stopopt opt_str]   : Value to supply for the STOP_OPTION xml variable"
+  echo "                          (applies to all cases). Default value: \"$STOP_OPT\""
+  echo "  [--stopn N]           : Number of STOP_OPTION units to run for (applies to "
+  echo "                          all cases). Default value:\"$STOP_N\""
   echo "  [-nc|--no-create]     : Skip the create and setup steps"
   echo "  [-nb|--no-build]      : Skip the build step"
   echo "  [-nr|--no-run]        : Skip the run step"
@@ -105,6 +110,12 @@ while [ $# -ge 1 ]; do
       ;;
     --ntasks=*)
       NTASKSS=( "${ARG#*=}" )
+      ;;
+    --stopopt)
+      STOP_OPT="$2"; shift
+      ;;
+    --stopn)
+      STOP_N="$2"; shift
       ;;
     -nc|--no-create)
       DO_CREATE=false

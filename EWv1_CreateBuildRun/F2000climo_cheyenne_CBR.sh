@@ -40,6 +40,8 @@ COMP="F2000climo"
 MACH="cheyenne"
 A_KEY="UCSU0085"
 PRE="" # Case prefix for uniqueness
+STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
+STOP_N=10         # For STOP_N xml variables in a case
 # End EDIT HERE ###############################################################
 
 
@@ -111,8 +113,8 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
     ###########################################################################
     cd $CASEROOT
     ./xmlchange DOUT_S=false
-    ./xmlchange STOP_OPTION=ndays
-    ./xmlchange STOP_N=10
+    ./xmlchange STOP_OPTION=$STOP_OPT
+    ./xmlchange STOP_N=$STOP_N
     ./xmlchange LND_DOMAIN_FILE="domain.lnd.mpasa120_gx1v7.201215.nc"
 
 cat << __EOF_NL_CAM >> user_nl_cam
