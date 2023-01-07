@@ -104,12 +104,69 @@ while [ $# -ge 1 ]; do
       ;;
     --res=*)
       RESS=( "${ARG#*=}" )
+      if [ "${RESS::1}" = "\"" ] ; then
+        RESS[0]="${RESS[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != "\"" ]; do
+          RESS=( ${RESS[@]} "${ARG:: -1}" ); shift; ARG="$1"
+        done
+        RESS=( ${RESS[@]} "${ARG}" )
+      elif [ "${RESS::1}" = "\'" ] ; then
+        RESS[0]="${RESS[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != "\'" ]; do
+          RESS=( ${RESS[@]} "${ARG}" ); shift; ARG="$1"
+        done
+        RESS=( ${RESS[@]} "${ARG:: -1}" )
+      elif [ "${RESS::1}" = "(" ] ; then
+        RESS[0]="${RESS[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != ")" ]; do
+          RESS=( ${RESS[@]} "${ARG}" ); shift; ARG="$1"
+        done
+        RESS=( ${RESS[@]} "${ARG:: -1}" )
+      fi
       ;;
     --compiler=*)
       C_SUITES=( "${ARG#*=}" )
+      if [ "${C_SUITES::1}" = "\"" ] ; then
+        C_SUITES[0]="${C_SUITES[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != "\"" ]; do
+          C_SUITES=( ${C_SUITES[@]} "${ARG:: -1}" ); shift; ARG="$1"
+        done
+        C_SUITES=( ${C_SUITES[@]} "${ARG}" )
+      elif [ "${C_SUITES::1}" = "\'" ] ; then
+        C_SUITES[0]="${C_SUITES[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != "\'" ]; do
+          C_SUITES=( ${C_SUITES[@]} "${ARG}" ); shift; ARG="$1"
+        done
+        C_SUITES=( ${C_SUITES[@]} "${ARG:: -1}" )
+      elif [ "${C_SUITES::1}" = "(" ] ; then
+        C_SUITES[0]="${C_SUITES[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != ")" ]; do
+          C_SUITES=( ${C_SUITES[@]} "${ARG}" ); shift; ARG="$1"
+        done
+        C_SUITES=( ${C_SUITES[@]} "${ARG:: -1}" )
+      fi
       ;;
     --ntasks=*)
       NTASKSS=( "${ARG#*=}" )
+      if [ "${NTASKSS::1}" = "\"" ] ; then
+        NTASKSS[0]="${NTASKSS[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != "\"" ]; do
+          NTASKSS=( ${NTASKSS[@]} "${ARG:: -1}" ); shift; ARG="$1"
+        done
+        NTASKSS=( ${NTASKSS[@]} "${ARG}" )
+      elif [ "${NTASKSS::1}" = "\'" ] ; then
+        NTASKSS[0]="${NTASKSS[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != "\'" ]; do
+          NTASKSS=( ${NTASKSS[@]} "${ARG}" ); shift; ARG="$1"
+        done
+        NTASKSS=( ${NTASKSS[@]} "${ARG:: -1}" )
+      elif [ "${NTASKSS::1}" = "(" ] ; then
+        NTASKSS[0]="${NTASKSS[0]:1}"; shift; ARG="$1"
+        while [ "${ARG: -1}" != ")" ]; do
+          NTASKSS=( ${NTASKSS[@]} "${ARG}" ); shift; ARG="$1"
+        done
+        NTASKSS=( ${NTASKSS[@]} "${ARG:: -1}" )
+      fi
       ;;
     --stopopt)
       STOP_OPT="$2"; shift
