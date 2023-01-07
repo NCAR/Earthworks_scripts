@@ -103,7 +103,8 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
     vexec "$CCMD"
     if [ "$?" -ne 0 ]; then
       echo "ERROR: create_newcase failed"
-      exit 1
+      echo -e "--- End loop for $CASE ---\n"
+      continue
     fi
     # End Create case #########################################################
 
@@ -130,7 +131,8 @@ __EOF_NL_CAM
     vexec "./case.setup"
     if [ "$?" -ne 0 ]; then
       echo "ERROR: case.setup failed"
-      exit 1
+      echo -e "--- End loop for $CASE ---\n"
+      continue
     fi
     # End Setup case ##########################################################
   fi # DO_CREATE
@@ -144,7 +146,8 @@ __EOF_NL_CAM
     vexec "qcmd -A $A_KEY -- ./case.build --skip-provenance-check"
     if [ "$?" -ne 0 ]; then
       echo "ERROR: case.build failed"
-      exit 1
+      echo -e "--- End loop for $CASE ---\n"
+      continue
     fi
     # End Build case ##########################################################
   fi # DO_BUILD
@@ -160,7 +163,8 @@ __EOF_NL_CAM
     vexec "./case.submit"
     if [ "$?" -ne 0 ]; then
       echo "ERROR: case.submit failed"
-      exit 1
+      echo -e "--- End loop for $CASE ---\n"
+      continue
     fi
     # End Run case ############################################################
   fi # DO_RUN
