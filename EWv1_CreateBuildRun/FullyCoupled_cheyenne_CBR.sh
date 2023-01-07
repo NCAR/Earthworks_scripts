@@ -170,7 +170,8 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
 
     # Copy the rst file
     [ ! -d ${OUTPUTROOT}/${CASE}/run ] && mkdir -p ${OUTPUTROOT}/${CASE}/run
-    vexec "cp /glade/p/univ/ucsu0085/rst_aos_${RES}km/* ${OUTPUTROOT}/${CASE}/run/" 
+    RST_DIR="$(printf '/glade/p/univ/ucsu0085/rst_aos_%03dkm' ${RES})"
+    vexec "cp ${RST_DIR}/* ${OUTPUTROOT}/${CASE}/run/" 
 
 cat << __EOF_NL_CAM >> user_nl_cam
 ncdata = '$ATM_NCDATA'
