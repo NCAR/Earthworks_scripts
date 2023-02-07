@@ -64,7 +64,7 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
   #############################################################################
   # End Set loop vars
   #############################################################################
-  CASE=$(printf "%s%s.mpasa%03d.%s.%s" "${PRE:+${PRE}_}" "$COMP" "$RES" "$MACH" "$C")
+  CASE=$(printf "%s%s.mpasa%03d.%s.%s" "${PRE:+${PRE}_}" "$COMP" "$RES" "$MACH" "$C_SUITE")
   [ $NTASKS -gt 0 ] && CASE="${CASE}.${NTASKS}"
   CASEROOT="${CASES_DIR}/${CASE}"
   GRID=$(printf "mpasa%03d_mpasa%03d" $RES $RES)
