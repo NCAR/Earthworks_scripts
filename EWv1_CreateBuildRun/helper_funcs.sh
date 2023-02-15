@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-THIS_FILE="helper_funcs.sh"
+THIS_FILE="${THIS_FILE:-helper_funcs.sh}"
 # This script contains the helper functions for the other scripts in this
 # directory as well as the argument parsing and print statements about the run
 
