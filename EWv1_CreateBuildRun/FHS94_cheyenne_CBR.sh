@@ -60,24 +60,27 @@ module load python/3     # Python 3 is needed by CIME
 
 for C_SUITE in ${C_SUITES[@]}; do
 for RES in ${RESS[@]}; do
-for NTASKS in ${NTASKSS[@]:-"-1"}; do
+for NTASKS in ${NTASKSS[@]:-"0"}; do
   #############################################################################
   # End Set loop vars
   #############################################################################
   CASE=$(printf "%s%s.mpasa%03d.%s.%s" "${PRE:+${PRE}_}" "$C_SUITE_SUITE_SUITEOMP" "$RES" "$MACH" "$C_SUITE")
-  [ $NTASKS -gt 0 ] && CASE="${CASE}.${NTASKS}"
+  [ $NTASKS -ne 0 ] && CASE="${CASE}.${NTASKS}"
   CASEROOT="${CASES_DIR}/${CASE}"
   GRID=$(printf "mpasa%03d_mpasa%03d" $RES $RES)
   echo -e "--- Start loop for $CASE ---\n"
 
   case $RES in
     120)
+      # [ $NTASKS -eq 0 ] && NTASKS="36"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.40962_mesh/x1.40962.graph.info.part."
       ;;
     60)
+      [ $NTASKS -eq 0 ] && NTASKS="$((36*4))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
       ;;
     30)
+      [ $NTASKS -eq 0 ] && NTASKS="$((36*16))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
       ;;
     *)
@@ -98,7 +101,7 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
     CCMD="$CCMD --case $CASEROOT --project $A_KEY"
     CCMD="$CCMD --compiler $C_SUITE --res $GRID --compset ${COMP_LONG:-$COMP}"
     CCMD="$CCMD --driver nuopc --run-unsupported"
-    [ $NTASKS -gt 0 ] && CCMD="$CCMD --pecount $NTASKS"
+    [ $NTASKS -ne 0 ] && CCMD="$CCMD --pecount $NTASKS"
 
     vexec "$CCMD"
     if [ "$?" -ne 0 ]; then

@@ -20,7 +20,7 @@ C_SUITES="intel"
 # For resolutions, provide an array of valid CESM grids in the RESS variable
 RESS="120"
 # For pecount, provide an array of valid CESM pecounts in the NTASKSS variable
-NTASKSS="144"
+NTASKSS=""
 
 ## Controls for this script
 # VERBOSITY is used to control the output of vexec function below
@@ -61,18 +61,19 @@ module load python/3     # Python 3 is needed by CIME
 
 for C_SUITE in ${C_SUITES[@]}; do
 for RES in ${RESS[@]}; do
-for NTASKS in ${NTASKSS[@]:-"-1"}; do
+for NTASKS in ${NTASKSS[@]:-"0"}; do
   #############################################################################
   # End Set loop vars
   #############################################################################
   CASE=$(printf "%s%s.mpasa%03d.%s.%s" "${PRE:+${PRE}_}" "$COMP" "$RES" "$MACH" "$C_SUITE")
-  [ $NTASKS -gt 0 ] && CASE="${CASE}.${NTASKS}"
+  [ $NTASKS -ne 0 ] && CASE="${CASE}.${NTASKS}"
   CASEROOT="${CASES_DIR}/${CASE}"
   GRID=$(printf "mpasa%03d_oQU%03d" $RES $RES)
   echo -e "--- Start loop for $CASE ---\n"
 
   case $RES in
     120)
+      [ $NTASKS -eq 0 ] && NTASKS="144"
       ATM_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/atm/cam/coords/mpasa120_ESMF_desc.200911.nc"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.40962_mesh/x1.40962.graph.info.part."
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa120_L32_CFSR_c210426.nc"
@@ -88,6 +89,7 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
       SI_CONFIG_DT="1800.0D0"
       ;;
     60)
+      [ $NTASKS -eq 0 ] && NTASKS="$((144*4))"
       ATM_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa60_ESMFmesh-20210803.nc"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210518.nc"
@@ -102,6 +104,7 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
       SI_CONFIG_DT="600.0D0"
       ;;
     30)
+      [ $NTASKS -eq 0 ] && NTASKS="$((144*16))"
       ATM_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa30_ESMFmesh-20210803.nc"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
       ATM_NCDATA="/glade/p/cesmdata/cseg/inputdata/atm/cam/inic/mpas/mpasa30_L32_CFSR_c210611.nc"
@@ -132,7 +135,7 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
     CCMD="$CCMD --case $CASEROOT --project $A_KEY"
     CCMD="$CCMD --compiler $C_SUITE --res $GRID --compset ${COMP_LONG:-$COMP}"
     CCMD="$CCMD --driver nuopc --run-unsupported"
-    [ $NTASKS -gt 0 ] && CCMD="$CCMD --pecount $NTASKS"
+    [ $NTASKS -ne 0 ] && CCMD="$CCMD --pecount $NTASKS"
 
     vexec "$CCMD"
     if [ "$?" -ne 0 ]; then
