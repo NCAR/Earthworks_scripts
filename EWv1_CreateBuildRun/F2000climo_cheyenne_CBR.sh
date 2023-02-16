@@ -73,14 +73,17 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
   case $RES in
     120)
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.40962_mesh/x1.40962.graph.info.part."
+      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa120_L32_CFSR_c210426.nc"
       ATM_SRF=""
       ;;
     60)
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
+      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa30_L32_CFSR_c210611.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
       ;;
     30)
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
+      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210518.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ;;
     *)
@@ -126,6 +129,7 @@ ${ATM_SRF:+drydep_srf_file = '$ATM_SRF'}
 mpas_block_decomp_file_prefix = '$ATM_BLCK_PRE'
 mpas_len_disp = $LEN_DISP
 &camexp
+ ${ATM_NCDATA:+ncdata = '$ATM_NCDATA'}
  mpas_dt = $ATM_DT
  scale_dry_air_mass =   -1.0
  cldfrc_sh1 = 0.04
