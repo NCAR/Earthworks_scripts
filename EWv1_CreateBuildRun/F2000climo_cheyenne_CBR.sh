@@ -73,12 +73,15 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
   case $RES in
     120)
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.40962_mesh/x1.40962.graph.info.part."
+      ATM_SRF=""
       ;;
     60)
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
+      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
       ;;
     30)
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
+      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ;;
     *)
       echo -e "ERROR: value '$RES' is not a valid resolution"
@@ -119,6 +122,7 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
     ./xmlchange LND_DOMAIN_FILE="domain.lnd.mpasa120_gx1v7.201215.nc"
 
 cat << __EOF_NL_CAM >> user_nl_cam
+${ATM_SRF:+drydep_srf_file = '$ATM_SRF'}
 mpas_block_decomp_file_prefix = '$ATM_BLCK_PRE'
 mpas_len_disp = $LEN_DISP
 &camexp
