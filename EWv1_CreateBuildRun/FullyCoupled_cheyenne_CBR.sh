@@ -104,7 +104,7 @@ for NTASKS in ${NTASKSS[@]:-"-1"}; do
     30)
       ATM_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa30_ESMFmesh-20210803.nc"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
-      ATM_NCDTA="/glade/p/cesmdata/cseg/inputdata/atm/cam/inic/mpas/mpasa30_L32_CFSR_c210611.nc"
+      ATM_NCDATA="/glade/p/cesmdata/cseg/inputdata/atm/cam/inic/mpas/mpasa30_L32_CFSR_c210611.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_30_nc3000_Co015_Fi001_MulG_PF_Nsw011.nc"
       LND_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa30_ESMFmesh-20210803.nc"
