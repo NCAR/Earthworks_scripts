@@ -77,6 +77,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa120_L32_CFSR_c210426.nc"
       ATM_SRF=""
       ATM_BND=""
+      ATM_DT="450.0D0"
       LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa120_hist_78pfts_CMIP6_simyr2000_c211108.nc"
       ;;
     60)
@@ -85,6 +86,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210611.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_60_nc3000_Co030_Fi001_MulG_PF_Nsw021.nc"
+      ATM_DT="225.0D0"
       LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa60_hist_78pfts_CMIP6_simyr2000_c211110.nc"
       ;;
     30)
@@ -93,6 +95,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa30_L32_CFSR_c210518.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_30_nc3000_Co015_Fi001_MulG_PF_Nsw011.nc"
+      ATM_DT="120.0D0" # Closest factor of cam_dt (1800) to 112.5
       LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa30_hist_78pfts_CMIP6_simyr2000_c211111.nc"
       ;;
     *)
@@ -101,7 +104,6 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ;;
   esac
   LEN_DISP=$(printf "%d000" $RES)
-  ATM_DT="$(( 450 / (120 / $RES) )).0D0"  # DT is set relative to the 120km resolution
   # End Set loop vars #########################################################
 
   if [ "$DO_CREATE" = true ]; then
