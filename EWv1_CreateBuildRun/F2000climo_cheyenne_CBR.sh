@@ -77,6 +77,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa120_L32_CFSR_c210426.nc"
       ATM_SRF=""
       ATM_BND=""
+      LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa120_hist_78pfts_CMIP6_simyr2000_c211108.nc"
       ;;
     60)
       [ $NTASKS -eq 0 ] && NTASKS="$((36*4))"
@@ -84,6 +85,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210611.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_60_nc3000_Co030_Fi001_MulG_PF_Nsw021.nc"
+      LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa60_hist_78pfts_CMIP6_simyr2000_c211110.nc"
       ;;
     30)
       [ $NTASKS -eq 0 ] && NTASKS="$((36*16))"
@@ -91,6 +93,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa30_L32_CFSR_c210518.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_30_nc3000_Co015_Fi001_MulG_PF_Nsw011.nc"
+      LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa30_hist_78pfts_CMIP6_simyr2000_c211111.nc"
       ;;
     *)
       echo -e "ERROR: value '$RES' is not a valid resolution"
@@ -147,7 +150,7 @@ __EOF_NL_CAM
 
 cat << __EOF_NL_CLM >> user_nl_clm
 &camexp
- fsurdat = '/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/release-clm5.0.34/surfdata_mpasa120_hist_78pfts_CMIP6_simyr2000_c201215.nc'
+  fsurdat = '$LND_FSUR'
 /
 __EOF_NL_CLM
 
