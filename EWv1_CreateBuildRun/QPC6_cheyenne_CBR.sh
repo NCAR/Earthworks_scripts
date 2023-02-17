@@ -81,13 +81,13 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       [ $NTASKS -eq 0 ] && NTASKS="$((36*4))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
       ATM_NCDATA="/glade/p/cesmdata/cseg/inputdata/atm/cam/inic/mpas/mpasa60_L32_notopo_coords_c211118.nc"
-      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
+      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ;;
     30)
       [ $NTASKS -eq 0 ] && NTASKS="$((36*16))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
       ATM_NCDATA="/glade/p/cesmdata/cseg/inputdata/atm/cam/inic/mpas/mpasa30_L32_notopo_coords_c211118.nc"
-      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
+      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
       ;;
     *)
       echo -e "ERROR: value '$RES' is not a valid resolution"

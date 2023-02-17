@@ -81,15 +81,15 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     60)
       [ $NTASKS -eq 0 ] && NTASKS="$((36*4))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
-      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa30_L32_CFSR_c210611.nc"
-      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
+      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210611.nc"
+      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_60_nc3000_Co030_Fi001_MulG_PF_Nsw021.nc"
       ;;
     30)
       [ $NTASKS -eq 0 ] && NTASKS="$((36*16))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
-      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210518.nc"
-      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
+      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa30_L32_CFSR_c210518.nc"
+      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_30_nc3000_Co015_Fi001_MulG_PF_Nsw011.nc"
       ;;
     *)
