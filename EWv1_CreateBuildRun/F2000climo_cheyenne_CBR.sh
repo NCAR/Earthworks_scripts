@@ -78,24 +78,27 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ATM_SRF=""
       ATM_BND=""
       ATM_DT="450.0D0"
+      LND_DOMAIN="domain.lnd.mpasa120_gx1v7.201215.nc"
       LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa120_hist_78pfts_CMIP6_simyr2000_c211108.nc"
       ;;
     60)
-      [ $NTASKS -eq 0 ] && NTASKS="$((36*4))"
+      [ $NTASKS -eq 0 ] && NTASKS="$((36*5))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
-      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210611.nc"
+      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210518.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_60_nc3000_Co030_Fi001_MulG_PF_Nsw021.nc"
       ATM_DT="225.0D0"
+      LND_DOMAIN="domain.lnd.mpasa60_gx1v7.210716.nc"
       LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa60_hist_78pfts_CMIP6_simyr2000_c211110.nc"
       ;;
     30)
       [ $NTASKS -eq 0 ] && NTASKS="$((36*16))"
       ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
-      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa30_L32_CFSR_c210518.nc"
+      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa30_L32_CFSR_230302.nc"
       ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
       ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_30_nc3000_Co015_Fi001_MulG_PF_Nsw011.nc"
       ATM_DT="120.0D0" # Closest factor of cam_dt (1800) to 112.5
+      LND_DOMAIN="domain.lnd.mpasa30_gx1v7.210601.nc"
       LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa30_hist_78pfts_CMIP6_simyr2000_c211111.nc"
       ;;
     *)
@@ -133,17 +136,17 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     ./xmlchange DOUT_S=false
     ./xmlchange STOP_OPTION=$STOP_OPT
     ./xmlchange STOP_N=$STOP_N
-    ./xmlchange LND_DOMAIN_FILE="domain.lnd.mpasa120_gx1v7.201215.nc"
+    # ./xmlchange LND_DOMAIN_FILE=${LND_DOMAIN}
 
 cat << __EOF_NL_CAM >> user_nl_cam
 ${ATM_SRF:+drydep_srf_file = '$ATM_SRF'}
 ${ATM_BND:+bnd_topo = '$ATM_BND'}
+${ATM_NCDATA:+ncdata = '$ATM_NCDATA'}
 mpas_block_decomp_file_prefix = '$ATM_BLCK_PRE'
 mpas_len_disp = $LEN_DISP
 &camexp
- ${ATM_NCDATA:+ncdata = '$ATM_NCDATA'}
  mpas_dt = $ATM_DT
- scale_dry_air_mass =   -1.0
+ scale_dry_air_mass = -1.0
  cldfrc_sh1 = 0.04
  dust_emis_fact = 0.70D0
  zmconv_ke = 5.0E-6
