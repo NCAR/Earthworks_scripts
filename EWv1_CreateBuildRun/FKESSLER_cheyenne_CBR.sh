@@ -57,10 +57,12 @@ module load python/3     # Python 3 is needed by CIME
 [ ! -d $CASES_DIR ] && "mkdir -p $CASES_ROOT"
 
 # FKESSLER Specific, remove variables from fincl1
+# The iCLy,  iCL,  iCL2, 'TT_SLOT1', 'TT_SLOT2', 'TT_SLOT3', 'TT_COSB',
+# 'TT_CCOSB', and 'TT_lCCOSB' variables cause errors when running if present
 XML_FILE="$SRCROOT/components/cam/bld/namelist_files/use_cases/dctest_baro_kessler.xml"
 XML_ORIG="$XML_FILE.orig"
 cp $XML_FILE $XML_ORIG
-sed -i "s/^ 'PS',.*/  'PS','Q','T','U','V','OMEGA'/" $XML_FILE
+sed -i "s/^ 'PS',.*/  'PS','PRECL','Q','CLDLIQ','RAINQM','T','U','V','OMEGA'/" $XML_FILE
 echo "NOTE: edited $XML_FILE"
 echo "Backup saved in $XML_ORIG"
 echo ""
