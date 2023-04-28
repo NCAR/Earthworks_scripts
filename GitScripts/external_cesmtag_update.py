@@ -33,7 +33,7 @@ def parse_args(args=None):
             nargs="?",
             required=True,
             help="Tag from ESCOMP/CESM to use to update EarthWorks externals")
-    dpath = Path.cwd().parents[1]
+    dpath = Path.cwd().parents[2]
     parser.add_argument("--root-dir", "-rd",
             nargs=1,
             default=dpath,
