@@ -42,6 +42,7 @@ A_KEY="UCSU0085"
 PRE="" # Case prefix for uniqueness
 STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
 STOP_N=10         # For STOP_N xml variables in a case
+INPUTDATA="/glade/p/cesmdata/cseg/inputdata/"      # To look for other needed files
 # End EDIT HERE ###############################################################
 
 
@@ -118,6 +119,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     CCMD="$CCMD --case $CASEROOT --project $A_KEY"
     CCMD="$CCMD --compiler $C_SUITE --res $GRID --compset ${COMP_LONG:-$COMP}"
     CCMD="$CCMD --driver nuopc --run-unsupported"
+    CCMD="$CCMD -i ${INPUTDATA}"
     [ $NTASKS -ne 0 ] && CCMD="$CCMD --pecount $NTASKS"
 
     vexec "$CCMD"

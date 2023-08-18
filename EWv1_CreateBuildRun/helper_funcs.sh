@@ -70,6 +70,7 @@ function usage() {
   echo "  [-ow|--overwrite]     : If a case already exists, delete it first (no effect"
   echo "                          with --no-create provided)"
   echo "  [-cp|--caseprefix str]: Prepend this value to case names if provided"
+  echo "  [-id|--inputdata path]: Use this path instead of the default for DIN_LOC_ROOT"
   echo "  [-q|--quiet]          : Reduce output level, can be supplied twice to suppres"
   echo "                          most output"
   echo ""
@@ -190,7 +191,10 @@ while [ $# -ge 1 ]; do
       OVERWRITE=true
       ;;
     -cp|--caseprefix)
-      PRE=$2; shift
+      PRE="$2"; shift
+      ;;
+    -id|--inputdata)  
+      INPUTDATA="$2"; shift
       ;;
     -q|--quiet)
       if [ $VERBOSITY -gt 0 ]; then
