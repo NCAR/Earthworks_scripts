@@ -118,7 +118,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     # Setup case: change XML variables, edit namelists, case.setup
     ###########################################################################
     cd $CASEROOT
-    ./xmlchange CAM_CONFIG_OPTS="-phys held_suarez -analytic_ic -nlev 32"
+    ./xmlchange --append CAM_CONFIG_OPTS="-phys held_suarez -analytic_ic -nlev 32"
     ./xmlchange DOUT_S=false
     ./xmlchange STOP_OPTION=$STOP_OPT
     ./xmlchange STOP_N=$STOP_N

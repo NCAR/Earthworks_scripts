@@ -152,7 +152,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     # Setup case: change XML variables, edit namelists, case.setup
     ###########################################################################
     cd $CASEROOT
-    ./xmlchange CAM_CONFIG_OPTS="-dyn mpas"
+    ./xmlchange --append CAM_CONFIG_OPTS="-dyn mpas"
     ./xmlchange DOUT_S=false
     ./xmlchange DEBUG=false
     ./xmlchange REST_OPTION='ndays'
