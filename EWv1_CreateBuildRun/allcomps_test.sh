@@ -11,9 +11,10 @@ CSEROOT="$(realpath ${PWD}/../../../../cases)"
 [ -d "${CSEROOT}" ] || mkdir -p "${CSEROOT}"
 # Adjust case prefix to whatever makes sense for you
 PRE="$(date +%Y%b%d_%H%M%S)_alpha16dUpdate"
+INDATA="/glade/p/univ/ucsu0085/inputdata2"
 
-#CMD="_cheyenne_CBR.sh --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=(120 60 30) --compiler=(gnu intel) -cp ${PRE} "
-CMD="_cheyenne_CBR.sh --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=120 --compiler=(gnu intel) -cp ${PRE} "
+#CMD="_cheyenne_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=(120 60 30) --compiler=(gnu intel) -cp ${PRE} "
+CMD="_cheyenne_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=120 --compiler=(gnu intel) -cp ${PRE} "
 
 ## # Un-comment this section to do a dry run
 ## for C in ${COMPS[@]}; do
