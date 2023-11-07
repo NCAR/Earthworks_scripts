@@ -244,6 +244,18 @@ fi
 ###############################################################################
 # Print some info about the run of this script
 ###############################################################################
+
+DO_STR=""
+if [ "$DRY_RUN" = true ] ; then
+  DO_STR="DRY_RUN=$DRY_RUN, exiting early after printing case names"
+else
+  DO_STR="CREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN"
+fi
+if [ "${OVERWRITE}" = true ]; then
+  DO_STR="${DO_STR}\tOVERWRITE=true"
+fi
+
+
 echo -e "Submitting EarthWorks jobs to test ${COMP} compset on $HOSTNAME for $USER"
 echo -e "Starting at $(date)"
 echo -e "Using:"
@@ -252,15 +264,7 @@ echo -e "\tCreating cases in                    \"$CASES_DIR\""
 echo -e "\tCase bld and run directories will be \"${OUTPUTROOT}/\${CASENAME}\""
 echo -e "\tRunning with compilers               \"$(print_arr ${C_SUITES[@]})\""
 echo -e "\tOn MPAS-A grids (km)                 \"$(print_arr ${RESS[@]})\""
-if [ "$DRY_RUN" = true ] ; then
-  echo -e "\n\tDRY_RUN=$DRY_RUN, exiting early after printing case names"
-else
-  if [ "$OVERWRITE" = true ]; then
-    echo -e "\tCREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN\tOVERWRITE=true"
-  else
-    echo -e "\tCREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN"
-  fi
-fi
+echo -e "\t${DO_STR}"
 if [ ${#ARGS[@]} -gt 0 ]; then
 	echo -e "Unrecognized and ignored args: ${ARGS[@]}"
 fi
