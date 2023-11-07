@@ -62,6 +62,7 @@ function usage() {
   echo "                          (applies to all cases). Default value: \"$STOP_OPT\""
   echo "  [--stopn N]           : Number of STOP_OPTION units to run for (applies to "
   echo "                          all cases). Default value:\"$STOP_N\""
+  echo "  [-rst|--do-restart]   : Attempt a restart run via RESUBMIT option"
   echo "  [-nc|--no-create]     : Skip the create and setup steps"
   echo "  [-nb|--no-build]      : Skip the build step"
   echo "  [-nr|--no-run]        : Skip the run step"
@@ -175,6 +176,9 @@ while [ $# -ge 1 ]; do
     --stopn)
       STOP_N="$2"; shift
       ;;
+    -rst|--do-restart)
+      DO_RESTART=true
+      ;;
     -nc|--no-create)
       DO_CREATE=false
       ;;
@@ -250,6 +254,9 @@ if [ "$DRY_RUN" = true ] ; then
   DO_STR="DRY_RUN=$DRY_RUN, exiting early after printing case names"
 else
   DO_STR="CREATE=$DO_CREATE\tBUILD=$DO_BUILD\tRUN=$DO_RUN"
+fi
+if [ "${DO_RESTART}" = true ]; then
+  DO_STR="${DO_STR}\tRESTART=true"
 fi
 if [ "${OVERWRITE}" = true ]; then
   DO_STR="${DO_STR}\tOVERWRITE=true"

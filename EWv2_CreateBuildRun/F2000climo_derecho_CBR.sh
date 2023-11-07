@@ -32,6 +32,8 @@ VERBOSITY=2
 DO_CREATE=true     # Also includes setup
 DO_BUILD=true
 DO_RUN=true
+# Use RESUBMIT to do a restart run
+DO_RESTART=false
 # Remove any CASEROOTS before anything else in create section
 OVERWRITE=false
 
@@ -119,6 +121,13 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     ./xmlchange DOUT_S=false
     ./xmlchange STOP_OPTION=$STOP_OPT
     ./xmlchange STOP_N=$STOP_N
+<<<<<<< Updated upstream
+=======
+    # ./xmlchange LND_DOMAIN_FILE=${LND_DOMAIN}
+    if [ "$DO_RESTART" = true ]; then
+      ./xmlchange REST_OPTION=$STOP_OPT,REST_N=$STOP_N,RESUBMIT=1
+    fi
+>>>>>>> Stashed changes
 
 cat << __EOF_NL_CAM >> user_nl_cam
 &camexp
