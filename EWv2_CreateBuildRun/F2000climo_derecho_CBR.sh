@@ -14,7 +14,7 @@ SRCROOT="../EarthWorks"
 # Location to put cases and cases_out directories
 CASES_DIR="../cases/"
 # Location where case's bld and run directory will be created
-OUTPUTROOT="$TMPDIR"
+OUTPUTROOT="${SCRATCH}"
 # For compiler, provide an array of valid compilers in C_SUITES
 C_SUITES="intel"
 # For resolutions, provide an array of valid CESM grids in the RESS variable
@@ -59,6 +59,7 @@ module load python/3     # Python 3 is needed by CIME
 
 [ ! -d $CASES_DIR ] && "mkdir -p $CASES_ROOT"
 # End Setup environment #######################################################
+exit 1
 
 
 for C_SUITE in ${C_SUITES[@]}; do
