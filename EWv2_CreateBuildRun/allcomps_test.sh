@@ -16,7 +16,7 @@ PRE="$(date +%Y%b%d_%H%M%S)_EWMv2Testing"
 #INDATA="/glade/p/univ/ucsu0085/inputdata2"
 
 #CMD="_derecho_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=(120 60 30) --compiler=(gnu intel) -cp ${PRE} "
-CMD="_derecho_CBR.sh --srcroot "${SRCROOT}" --casesdir "${CSEROOT}" --res=("${RESS[@]}") --compiler=("${COMPI[@]}") -cp ${PRE} "
+CMD="_derecho_CBR.sh --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=(${RESS[@]}) --compiler=(${COMPI[@]}) -cp ${PRE} "
 
 ## # Un-comment this section to do a dry run
 ## for C in ${COMPS[@]}; do
@@ -30,12 +30,13 @@ CMD="_derecho_CBR.sh --srcroot "${SRCROOT}" --casesdir "${CSEROOT}" --res=("${RE
 for C in ${COMPS[@]}; do
 	CCMD="${C}${CMD}"
 	LG_FILE="log.setup.${PRE}.${C}.txt"
-	./${CCMD} -nb -nr 2>&1 | tee $LG_FILE
+	echo "./${CCMD}" | tee $LG_FILE
+	./${CCMD} -nb -nr 2>&1 | tee -a $LG_FILE
 done
 
 # Run the build and then submit steps for each
 for C in ${COMPS[@]}; do
 	CCMD="${C}${CMD}"
 	LG_FILE="log.buildrun.${PRE}.${C}.txt"
-	./${CCMD} -nc 2>&1 | tee $LG_FILE
+	./${CCMD} -nc 2>&1 | tee -a $LG_FILE
 done
