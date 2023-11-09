@@ -77,52 +77,51 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
   case $RES in
     120)
       [ $NTASKS -eq 0 ] && NTASKS="128"
-      ATM_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/atm/cam/coords/mpasa120_ESMF_desc.200911.nc"
-      ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.40962_mesh/x1.40962.graph.info.part."
-      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa120_L32_CFSR_c210426.nc"
-      ATM_SRF=""
-      ATM_BND=""
-      OCN_BLCK_PRE="/glade/p/univ/ucsu0085/inputdata/mpas-o.graph.info.QU120.part."
-      LND_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/atm/cam/coords/mpasa120_ESMF_desc.200911.nc"
-      LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa120_hist_78pfts_CMIP6_simyr2000_c211108.nc"
 
       ATM_NCPL=48
       ATM_DT="600.0D0"
       OCN_CONFIG_DT="00:30:00"
       SI_CONFIG_DT="1800.0D0"
+
+      OCN_MOC_ENABLE=".true."
+      OCN_USE_GM=".true."
+      OCN_USE_REDI=".true."
       ;;
     60)
       [ $NTASKS -eq 0 ] && NTASKS="$((128*4))"
-      ATM_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa60_ESMFmesh-20210803.nc"
-      ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.163842_mesh/x1.163842.graph.info.part."
-      ATM_NCDATA="/glade/p/univ/ucsu0085/inputdata/cami_01-01-2000_00Z_mpasa60_L32_CFSR_c210518.nc"
-      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa60_c210511.nc"
-      ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_60_nc3000_Co030_Fi001_MulG_PF_Nsw021.nc"
-      LND_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa60_ESMFmesh-20210803.nc"
-      LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa60_hist_78pfts_CMIP6_simyr2000_c211110.nc"
       
-      ATM_NCPL=144
+      ATM_NCPL=96
       ATM_DT="300.0D0"
-      OCN_CONFIG_DT="00:10:00"
-      SI_CONFIG_DT="600.0D0"
+      OCN_CONFIG_DT="00:15:00"
+      SI_CONFIG_DT="900.0D0"
+
+      OCN_MOC_ENABLE=".true."
+      OCN_USE_GM=".true."
+      OCN_USE_REDI=".true."
       ;;
     30)
       [ $NTASKS -eq 0 ] && NTASKS="$((128*16))"
-      ATM_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa30_ESMFmesh-20210803.nc"
-      ATM_BLCK_PRE="/glade/u/home/gdicker/mpas_resources/meshes/x1.655362_mesh/x1.655362.graph.info.part."
-      ATM_NCDATA="/glade/p/cesmdata/cseg/inputdata/atm/cam/inic/mpas/mpasa30_L32_CFSR_c210611.nc"
-      ATM_SRF="/glade/p/cesmdata/cseg/inputdata/atm/cam/chem/trop_mam/atmsrf_mpasa30_c210601.nc"
-      ATM_BND="/glade/p/cesmdata/cseg/inputdata/atm/cam/topo/mpas_30_nc3000_Co015_Fi001_MulG_PF_Nsw011.nc"
-      LND_DMN_MESH="/glade/p/cesmdata/cseg/inputdata/share/meshes/mpasa30_ESMFmesh-20210803.nc"
-      LND_FSUR="/glade/p/cesmdata/cseg/inputdata/lnd/clm2/surfdata_map/surfdata_mpasa30_hist_78pfts_CMIP6_simyr2000_c211111.nc"
       
-      ATM_NCPL=240
-      ATM_DT="180.0D0"
-      OCN_CONFIG_DT="00:06:00"
-      SI_CONFIG_DT="360.0D0"
+      ATM_NCPL=192
+      ATM_DT="225.0D0"
+      OCN_CONFIG_DT="00:07:30"
+      SI_CONFIG_DT="450.0D0"
+
+      OCN_MOC_ENABLE=".false."
+      OCN_USE_GM=".true."
+      OCN_USE_REDI=".true."
       ;;
     15)
       [ $NTASKS -eq 0 ] && NTASKS="$((128*32))"
+
+      ATM_NCPL=240
+      ATM_DT="120.0D0"
+      OCN_CONFIG_DT="00:04:00"
+      SI_CONFIG_DT="240.0D0"
+
+      OCN_MOC_ENABLE=".false."
+      OCN_USE_GM=".false."
+      OCN_USE_REDI=".false."
       ;;
     *)
       echo -e "ERROR: value '$RES' is not a valid resolution"
@@ -167,30 +166,12 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ./xmlchange REST_OPTION='ndays',REST_N=1
     fi
     # Run type options
-    ./xmlchange RUN_TYPE=hybrid
-    ./xmlchange RUN_REFCASE=$(printf "mpas_aos%03d" $RES)
-    ./xmlchange RUN_REFDATE=0002-01-01
-    ./xmlchange RUN_STARTDATE=0002-01-01
-    # Define mesh files
-    ./xmlchange OCN_DOMAIN_MESH="/glade/p/univ/ucsu0085/inputdata/oQU${RES}_ESMFmesh.nc"
-    ./xmlchange ICE_DOMAIN_MESH="/glade/p/univ/ucsu0085/inputdata/oQU${RES}_ESMFmesh.nc"
-    ./xmlchange MASK_MESH="/glade/p/univ/ucsu0085/inputdata/oQU${RES}_ESMFmesh.nc"
-    ./xmlchange ATM_DOMAIN_MESH="${ATM_DMN_MESH}"
-    ./xmlchange LND_DOMAIN_MESH="${LND_DMN_MESH}"
     ./xmlchange NCPL_BASE_PERIOD='day'
     ./xmlchange ATM_NCPL=$ATM_NCPL
 
-    # Copy the rst file
-    [ ! -d ${OUTPUTROOT}/${CASE}/run ] && mkdir -p ${OUTPUTROOT}/${CASE}/run
-    RST_DIR="$(printf '/glade/p/univ/ucsu0085/rst_aos_%03dkm' ${RES})"
-    vexec "cp ${RST_DIR}/* ${OUTPUTROOT}/${CASE}/run/" 
 
 cat << __EOF_NL_CAM >> user_nl_cam
-ncdata = '$ATM_NCDATA'
-${ATM_SRF:+drydep_srf_file = '$ATM_SRF'}
-${ATM_BND:+bnd_topo = '$ATM_BND'}
 mpas_dt = $ATM_DT
-fincl1 = 'PRECT','vorticity'
 __EOF_NL_CAM
 
 cat << __EOF_NL_OCN >> user_nl_mpaso
@@ -198,23 +179,35 @@ cat << __EOF_NL_OCN >> user_nl_mpaso
  config_dt = '$OCN_CONFIG_DT'
  config_time_integrator = 'split_explicit'
 /
+
+config_am_mocstreamfunction_enable = ${OCN_MOC_ENABLE}
+config_use_gm = ${OCN_USE_GM}
+config_use_redi = ${OCN_USE_REDI}
+
+config_cvmix_kpp_use_theory_wave = .true.
+config_am_mocstreamfunction_compute_interval = '0000-00-00_01:00:00'
+config_am_mocstreamfunction_compute_on_startup = .false.
+config_am_mocstreamfunction_max_bin = -1.0e34
+config_am_mocstreamfunction_min_bin = -1.0e34
+config_am_mocstreamfunction_num_bins = 180
+config_am_mocstreamfunction_output_stream = 'mocStreamfunctionOutput'
+config_am_mocstreamfunction_region_group = 'all'
+config_am_mocstreamfunction_transect_group = 'all'
+config_am_mocstreamfunction_write_on_startup = .false.
 __EOF_NL_OCN
 
 cat << __EOF_NL_SI >> user_nl_mpassi
 &seaice_model
  config_dt = $SI_CONFIG_DT
 /
+config_initial_latitude_north = 90.0
+config_initial_latitude_south = -90.0
 __EOF_NL_SI
-
-cat << __EOF_NL_CLM >> user_nl_clm
-fsurdat = '$LND_FSUR'
-__EOF_NL_CLM
 
     if [ $VERBOSITY -ge 2 ] ; then
       vexec "cat user_nl_cam"
       vexec "cat user_nl_mpaso"
       vexec "cat user_nl_mpassi"
-      vexec "cat user_nl_clm"
       echo ""
     fi
 
