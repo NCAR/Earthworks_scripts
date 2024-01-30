@@ -55,7 +55,6 @@ source $(dirname "$0")/helper_funcs.sh
 ###############################################################################
 # Setup enviornment: load modules, set system paths, etc
 ###############################################################################
-module load python/3     # Python 3 is needed by CIME
 
 [ ! -d $CASES_DIR ] && "mkdir -p $CASES_ROOT"
 # End Setup environment #######################################################
