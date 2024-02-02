@@ -1,7 +1,7 @@
-# H1 Instructions to Build and Run Earthworks compsets on Perlmutter
+# Instructions to Build and Run Earthworks compsets on Perlmutter
 
-# H2 Code Changes
-1. # H3 Code goes in your *.bashrc* file
+## Code Changes
+1. ### Code goes in your *.bashrc* file
 ```
 export LMOD_REDIRECT=yes                # Send command output to STDOUT so it can pipe more easily.
 export LMOD_IGNORE_CACHE=1              # Try this for now, given that we're constantly updating.
@@ -19,7 +19,7 @@ module use --append $SHAREDIR/Modules/Bundles           # New framework.
 module use --append $SHAREDIR/Modules/PrgEnv/*/*
 ```
 
-2. # H3 Code changes to ccs_config
+2. ### Code changes to ccs_config
 - Add Perlmutter to your ccs_config/machines/config_machines.xml
 ```
   <machine MACH="perlmutter">
@@ -176,5 +176,5 @@ endif()
 
 ```
 
-# H2 Build and Run instructions
+## Build and Run instructions
 Use the scripts from the [Perlmutter Scripts](https://github.com/NCAR/Earthworks_scripts/tree/main/Perlmutter_scripts)
