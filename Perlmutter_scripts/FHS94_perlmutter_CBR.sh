@@ -18,9 +18,9 @@ OUTPUTROOT="${SCRATCH}"
 # For compiler, provide an array of valid compilers in C_SUITES
 C_SUITES="nvhpc"
 # For resolutions, provide an array of valid CESM grids in the RESS variable
-RESS="120"
+RESS="60"
 # For pecount, provide an array of valid CESM pecounts in the NTASKSS variable
-NTASKSS="36"
+NTASKSS="64"
 
 ## Controls for this script
 # VERBOSITY is used to control the output of vexec function below
@@ -41,13 +41,13 @@ OVERWRITE=false
 COMP="FHS94"
 MACH="perlmutter"
 A_KEY="m4180"
-GPUS_PER_NODE="1"
-GPU_TYPE="a100"
-GPU_OFFLOAD="openacc"
+#GPUS_PER_NODE="1"
+#GPU_TYPE="a100"
+#GPU_OFFLOAD="openacc"
 PRE="" # Case prefix for uniqueness
 STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
 STOP_N=10         # For STOP_N xml variables in a case
-INPUTDATA="/global/cfs/cdirs/ccsm1/inputdata"      # To look for other needed files
+INPUTDATA="/pscratch/sd/s/ssuresh/inputdata"      # To look for other needed files
 # End EDIT HERE ###############################################################
 
 
@@ -101,9 +101,9 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     ###########################################################################
     if [ "$OVERWRITE" = true ]; then vexec "rm -rf $CASEROOT $TMPDIR/$CASE/"; fi
     CCMD="$SRCROOT/cime/scripts/create_newcase"
-    CCMD="$CCMD --case $CASEROOT --project $A_KEY"
+    CCMD="$CCMD --case $CASEROOT --project $A_KEY --mach $MACH"
     CCMD="$CCMD --compiler $C_SUITE --res $GRID --compset ${COMP_LONG:-$COMP}"
-    CCMD="$CCMD --ngpus-per-node $GPUS_PER_NODE --gpu-type $GPU_TYPE --gpu-offload $GPU_OFFLOAD"
+    #CCMD="$CCMD --ngpus-per-node $GPUS_PER_NODE --gpu-type $GPU_TYPE --gpu-offload $GPU_OFFLOAD"
     CCMD="$CCMD --driver nuopc --run-unsupported"
     CCMD="$CCMD -i ${INPUTDATA}"
     [ $NTASKS -ne 0 ] && CCMD="$CCMD --pecount $NTASKS"
