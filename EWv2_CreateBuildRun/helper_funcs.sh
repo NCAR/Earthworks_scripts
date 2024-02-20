@@ -200,6 +200,11 @@ while [ $# -ge 1 ]; do
     -id|--inputdata)  
       INPUTDATA="$2"; shift
       ;;
+    -g|--gpus)
+      GPU_PER_NODE="4"
+      GPU_TYPE="a100"
+      GPU_OFFLOAD="openacc"
+      ;;
     -q|--quiet)
       if [ $VERBOSITY -gt 0 ]; then
         VERBOSITY=$(($VERBOSITY - 1))
@@ -270,6 +275,9 @@ echo -e "\tEarthWorks Repo at                   \"$SRCROOT\""
 echo -e "\tCreating cases in                    \"$CASES_DIR\""
 echo -e "\tCase bld and run directories will be \"${OUTPUTROOT}/\${CASENAME}\""
 echo -e "\tRunning with compilers               \"$(print_arr ${C_SUITES[@]})\""
+if [ -n "$GPU_PER_NODE" ]; then
+  echo -e "\tRequesting GPUs                      \"GPU_PER_NODE=${GPU_PER_NODE} GPU_TYPE=${GPU_TYPE} GPU_OFFLOAD=${GPU_OFFLOAD}\""
+fi
 echo -e "\tOn MPAS-A grids (km)                 \"$(print_arr ${RESS[@]})\""
 echo -e "\t${DO_STR}"
 if [ ${#ARGS[@]} -gt 0 ]; then

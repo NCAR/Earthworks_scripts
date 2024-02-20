@@ -13,7 +13,7 @@ THIS_FILE="FullyCoupled_derecho_CBR.sh"
 SRCROOT="../EarthWorks"
 # Location to put cases and cases_out directories
 CASES_DIR="../cases/"
-# Location where case's bld and run directory will be created 
+# Location where case's bld and run directory will be created
 OUTPUTROOT="${SCRATCH}"
 # For compiler, provide an array of valid compilers in C_SUITES
 C_SUITES="intel"
@@ -43,6 +43,8 @@ COMP_LONG="2000_CAM60_CLM50%SP_MPASSI_MPASO_SROF_SGLC_SWAV"
 MACH="derecho"
 A_KEY="UCSU0085"
 # These can be unset to not use them in the create_newcase
+unset GPU_PER_NODE GPU_TYPE GPU_OFFLOAD
+# OR request GPUs by using --gpus or uncommenting these lines
 ## GPU_PER_NODE="4"
 ## GPU_TYPE="a100"
 ## GPU_OFFLOAD="openacc"
@@ -143,7 +145,13 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     CCMD="$CCMD --compiler $C_SUITE --res $GRID --compset ${COMP_LONG:-$COMP}"
     CCMD="$CCMD --driver nuopc --run-unsupported"
     CCMD="$CCMD -i ${INPUTDATA}"
-    [ -n "${GPU_PER_NODE}" ] && CCMD="$CCMD --ngpus-per-node $GPU_PER_NODE --gpu-type $GPU_TYPE --gpu-offload $GPU_OFFLOAD"
+    if [ -n "${GPU_PER_NODE}" ]; then
+      if [ "nvhpc" == "$C_SUITE" ] ; then
+        CCMD="$CCMD --ngpus-per-node $GPU_PER_NODE --gpu-type $GPU_TYPE --gpu-offload $GPU_OFFLOAD"
+      else
+        echo "NOTE: GPU flags only make sense for nvhpc compiler; not adding GPU flags to create_newcase for C_SUITE=${C_SUITE}"
+      fi
+    fi
     [ $NTASKS -ne 0 ] && CCMD="$CCMD --pecount $NTASKS"
 
     vexec "$CCMD"
@@ -230,7 +238,7 @@ __EOF_NL_SI
     # Build case: Start job to build case
     ###########################################################################
     cd $CASEROOT
-    if [ -n "$GPU_PER_NODE" ]; then
+    if [ -n "${GPU_PER_NODE}" ] && [ "nvhpc" == "${C_SUITE}" ] ; then
         vexec "qcmd -A $A_KEY -l select=1:ngpus=1 -- ./case.build --skip-provenance-check"
     else
         vexec "qcmd -A $A_KEY -- ./case.build --skip-provenance-check"

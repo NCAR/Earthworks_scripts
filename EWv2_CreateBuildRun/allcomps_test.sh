@@ -22,9 +22,11 @@ CSEROOT="$(realpath ${PWD}/../../../../cases)"
 PRE="$(date +%Y%b%d_%H%M%S)_EWMTesting"
 INDATA="/glade/campaign/univ/ucsu0085/inputdata"
 
-CMD="_derecho_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=(120 60 30) --compiler=(gnu intel) -cp ${PRE} "
+CMD="_derecho_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=(${RESS[@]}) --compiler=(${COMPI[@]}) -cp ${PRE} "
+## This line requests GPUs
+# CMD="_derecho_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=(${RESS[@]}) --compiler=(${COMPI[@]}) --gpus -cp ${PRE} "
 ## Note the difference in RESS between above and below lines. Arrays don't work for single values correctly
-# CMD="_derecho_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=${RESS} --compiler=(${COMPI[@]}) -cp ${PRE} "
+CMD="_derecho_CBR.sh -id ${INDATA} --srcroot ${SRCROOT} --casesdir ${CSEROOT} --res=${RESS} --compiler=(${COMPI[@]}) -cp ${PRE} "
 
 ## # Un-comment this section to do a dry run
 ## for C in ${COMPS[@]}; do
