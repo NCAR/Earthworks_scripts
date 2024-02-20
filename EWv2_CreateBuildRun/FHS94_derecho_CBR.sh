@@ -41,6 +41,10 @@ OVERWRITE=false
 COMP="FHS94"
 MACH="derecho"
 A_KEY="UCSU0085"
+# These can be unset to not use them in the create_newcase
+GPU_PER_NODE="4"
+GPU_TYPE="a100"
+GPU_OFFLOAD="openacc"
 PRE="" # Case prefix for uniqueness
 STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
 STOP_N=10         # For STOP_N xml variables in a case
@@ -102,6 +106,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     CCMD="$CCMD --compiler $C_SUITE --res $GRID --compset ${COMP_LONG:-$COMP}"
     CCMD="$CCMD --driver nuopc --run-unsupported"
     CCMD="$CCMD -i ${INPUTDATA}"
+    [ -n "${GPU_PER_NODE}" ] && CCMD="$CCMD --ngpus-per-node $GPU_PER_NODE --gpu-type $GPU_TYPE --gpu-offload $GPU_OFFLOAD"
     [ $NTASKS -ne 0 ] && CCMD="$CCMD --pecount $NTASKS"
 
     vexec "$CCMD"
@@ -140,7 +145,11 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
     # Build case: Start job to build case
     ###########################################################################
     cd $CASEROOT
-    vexec "qcmd -A $A_KEY -- ./case.build --skip-provenance-check"
+    if [ -n "$GPU_PER_NODE" ]; then
+        vexec "qcmd -A $A_KEY -l select=1:ngpus=1 -- ./case.build --skip-provenance-check"
+    else
+        vexec "qcmd -A $A_KEY -- ./case.build --skip-provenance-check"
+    fi
     if [ "$?" -ne 0 ]; then
       echo "ERROR: case.build failed"
       echo -e "--- End loop for $CASE ---\n"
