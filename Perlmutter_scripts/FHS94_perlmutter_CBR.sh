@@ -39,7 +39,7 @@ OVERWRITE=false
 
 ## Other configuration variables
 COMP="FHS94"
-MACH="perlmutter"
+MACH="perlmutter_ew_debug"
 A_KEY="m4180"
 #GPUS_PER_NODE="1"
 #GPU_TYPE="a100"
@@ -47,7 +47,7 @@ A_KEY="m4180"
 PRE="" # Case prefix for uniqueness
 STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
 STOP_N=10         # For STOP_N xml variables in a case
-INPUTDATA="/pscratch/sd/s/ssuresh/inputdata"      # To look for other needed files
+INPUTDATA="/global/cfs/cdirs/m4180/inputdata"     # To look for other needed files
 # End EDIT HERE ###############################################################
 
 
