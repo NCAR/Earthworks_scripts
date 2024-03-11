@@ -295,3 +295,5 @@ echo -e "-----------------------------------------------------------------------
 if [ "$DRY_RUN" = true ] ; then
   exit 0
 fi
+
+source /opt/cray/pe/cpe/23.12/restore_lmod_system_defaults.sh
