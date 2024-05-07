@@ -51,7 +51,7 @@ unset GPU_PER_NODE GPU_TYPE GPU_OFFLOAD
 PRE="" # Case prefix for uniqueness
 STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
 STOP_N=10         # For STOP_N xml variables in a case
-INPUTDATA="/glade/p/univ/ucsu0085/inputdata2/"      # To look for other needed files
+INPUTDATA="/glade/campaign/univ/ucsu0085/inputdata/"      # To look for other needed files
 # End EDIT HERE ###############################################################
 
 
