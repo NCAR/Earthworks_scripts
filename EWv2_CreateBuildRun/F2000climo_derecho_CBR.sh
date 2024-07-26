@@ -51,6 +51,10 @@ PRE="" # Case prefix for uniqueness
 STOP_OPT=ndays    # For STOP_OPTION xml variable in a case
 STOP_N=10         # For STOP_N xml variables in a case
 INPUTDATA="/glade/campaign/univ/ucsu0085/inputdata/"      # To look for other needed files
+# Physics columns per MPI task adjust at your own risk!
+# If you don't set this to a positive integer, CPU runs will use the default and
+#  GPU runs will be set according to resolution, nodes, and number of GPUs
+PCOLS="-1"
 # End EDIT HERE ###############################################################
 
 
@@ -161,6 +165,17 @@ __EOF_NL_CAM
       echo -e "--- End loop for $CASE ---\n"
       continue
     fi
+
+    # Automatically set PCOLS if not already defined or if not greater than 0
+    if [ -z "$PCOLS" -o "0" -ge "$PCOLS" ] ; then
+      PCOLS=$(get_pcols)
+    fi
+    # Now only add pcols to CAM_CONFIG_OPTS if PCOLS and NGPUS_PER_NODE greater than 0
+    if [ "0" -lt "$PCOLS" -a "0" -lt "${NGPUS_PER_NODE}" ] ; then
+      echo "NOTE: setting pcols to \"$PCOLS\" for GPU run"
+      ./xmlchange --append CAM_CONFIG_OPTS=" -pcols $PCOLS"
+    fi
+
     # End Setup case ##########################################################
   fi # DO_CREATE
 

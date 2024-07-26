@@ -45,7 +45,7 @@ function usage() {
   echo ""
   echo "usage: $THIS_FILE [--srcroot <path>] [--casesdir <path>]"
   echo "         [--res=<r_array>] [--compiler=<c_array>] [--ntasks=<nt_array>]"
-  echo "         [--stopopt opt_str] [--stopn N]"
+  echo "         [--stopopt opt_str] [--stopn N] [--pcols N]"
   echo "         [-nc|--no-create] [-nb|-no-build]   [-nr|--no-run]"
   echo "         [-dr|--dry-run]   [-ow|--overwrite] [-q|--quiet]"
   echo "options:"
@@ -62,6 +62,9 @@ function usage() {
   echo "                          (applies to all cases). Default value: \"$STOP_OPT\""
   echo "  [--stopn N]           : Number of STOP_OPTION units to run for (applies to "
   echo "                          all cases). Default value:\"$STOP_N\""
+  echo "  [--pcols N]           : Number of physics columns per MPI task. Modify at potential"
+  echo "                          risk to performance. If less than 0 CPU runs use the default"
+  echo "                          and GPU runs will be set automatically"
   echo "  [-rst|--do-restart]   : Attempt a restart run via RESUBMIT option"
   echo "  [-nc|--no-create]     : Skip the create and setup steps"
   echo "  [-nb|--no-build]      : Skip the build step"
@@ -208,6 +211,9 @@ while [ $# -ge 1 ]; do
       ;;
     --stopn)
       STOP_N="$2"; shift
+      ;;
+    --stopn)
+      PCOLS="$2"; shift
       ;;
     -rst|--do-restart)
       DO_RESTART=true
