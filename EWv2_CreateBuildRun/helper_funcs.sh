@@ -77,6 +77,39 @@ function usage() {
   echo ""
   exit $RET
 }
+
+
+function get_nodes(){
+  # Get the node count for the run from preview_run output
+  # NOTE: requires ./case.setup to have been run and to be inside a case
+  local NNODES=$(./preview_run | grep -e "nodes:" | awk -F: '{gsub(/[ \t]+/,"",$2)} {print $2}')
+  echo "$NNODES"
+}
+
+function get_pcols(){
+  # Exit early if NGPUS_PER_NODE isn't a positive integer
+  if [ "${NGPUS_PER_NODE}" -ne "${NGPUS_PER_NODE}" ] ; then
+    # Not a number
+    echo -1
+    return
+  else
+    if [ "0" -ge "${NGPUS_PER_NODE}" ] ; then
+      echo -1
+      return
+    fi
+  fi
+
+  local ncells nnodes ngpus
+  ncells="${NCELLS}"
+  [ "${ncells}" -ne "${ncells}" ] && (echo -1 && return)
+  nnodes="$(get_nodes)"
+  [ "${nnodes}" -ne "${nnodes}" ] && (echo -1 && return)
+  ngpus="${NGPUS_PER_NODE}"
+  [ "${ngpus}" -ne "${ngpus}" ] && (echo -1 && return)
+
+  echo "$((${ncells} / ( ${nnodes} * $ngpus ) ))"
+}
+
 # End Helper functions ########################################################
 
 
