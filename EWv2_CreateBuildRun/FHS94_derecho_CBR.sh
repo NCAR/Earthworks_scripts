@@ -81,15 +81,19 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
   case $RES in
     120)
       [ $NTASKS -eq 0 ] && NTASKS="64"
+      NCELLS=40962
       ;;
     60)
       [ $NTASKS -eq 0 ] && NTASKS="$((64*2))"
+      NCELLS=163842
       ;;
     30)
       [ $NTASKS -eq 0 ] && NTASKS="$((64*4))"
+      NCELLS=655362
       ;;
     15)
       [ $NTASKS -eq 0 ] && NTASKS="$((64*16))"
+      NCELLS=2621442
       ;;
     *)
       echo -e "ERROR: value '$RES' is not a valid resolution"

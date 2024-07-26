@@ -82,6 +82,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
   case $RES in
     120)
       [ $NTASKS -eq 0 ] && NTASKS="128"
+      NCELLS=40962
 
       ATM_NCPL=48
       ATM_DT="600.0D0"
@@ -94,6 +95,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ;;
     60)
       [ $NTASKS -eq 0 ] && NTASKS="$((128*4))"
+      NCELLS=163842
       
       ATM_NCPL=96
       ATM_DT="300.0D0"
@@ -106,6 +108,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ;;
     30)
       [ $NTASKS -eq 0 ] && NTASKS="$((128*16))"
+      NCELLS=655362
       
       ATM_NCPL=192
       ATM_DT="225.0D0"
@@ -118,6 +121,7 @@ for NTASKS in ${NTASKSS[@]:-"0"}; do
       ;;
     15)
       [ $NTASKS -eq 0 ] && NTASKS="$((128*32))"
+      NCELLS=2621442
 
       ATM_NCPL=240
       ATM_DT="120.0D0"
